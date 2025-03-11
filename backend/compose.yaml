@@ -1,0 +1,21 @@
+services:
+  postgresql:
+    image: postgres:14-alpine
+    restart: always
+    container_name: postgresql
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    ports:
+      - 5432:5432
+    volumes:
+      - database_data:/var/lib/postgresql/data:rw
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-foobar}", "-U", "${POSTGRES_USER:-foobar}"]
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  volumes:
+    database_data:
