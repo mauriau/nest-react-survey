@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
-function App() {
-  const [message, setMessage] = useState('');
+async function getData (): Promise<any>{
+    const response = await fetch('http://localhost:3000/api')
+    if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+    }
 
-  useEffect(() => {
-    fetch('http://localhost:3000/api')
-        .then((response) => response.json())
-        .then((data) => setMessage(data.message))
-        .catch((error) => console.error('Error:', error));
-  }, []);
+    const json = await response.json();
+    console.log(json);
+
+    return json;
+}
+
+function App() {
+  const data = getData()
+
 
   return (
       <div>
-        <h1>{message}</h1>
+        <h1>{data.message}</h1>
       </div>
   );
 }

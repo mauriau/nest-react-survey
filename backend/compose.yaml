@@ -10,12 +10,12 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - database_data:/var/lib/postgresql/data:rw
+      - pgdata:/var/lib/postgresql/data:rw
     healthcheck:
       test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-foobar}", "-U", "${POSTGRES_USER:-foobar}"]
       timeout: 5s
       retries: 5
       start_period: 60s
 
-  volumes:
-    database_data:
+volumes:
+  pgdata:

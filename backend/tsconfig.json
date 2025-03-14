@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2021",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/**/*",
+    "test/**/*",
+    "node_modules/.pnpm/@types+jest@29.5.14/node_modules/@types/jest/index.d.ts",
+    "node_modules/.pnpm/@types+jest@29.5.14/node_modules/@types/jest/index.d.ts"
+  ]
+}
