@@ -1,7 +1,8 @@
-import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany} from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany, Unique} from 'typeorm';
 import {Role} from "../../auth/role.enum";
 import {SurveyResponse} from "../../surveys/entities/survey-response.entity";
 
+@Unique(["username", "email"])
 @Entity()
 export class User {
     @PrimaryGeneratedColumn('uuid')
@@ -21,15 +22,15 @@ export class User {
         enum: Role,
         default: Role.User,
     })
-    role: Role;
+    roles: Role[];
 
     @CreateDateColumn()
     created_at: Date;
 
-//  @OneToMany(() => SurveyResponse, surveyResponse => surveyResponse.user, { cascade: true, orphanedRowAction: "delete" })
-//  surveyResponse: SurveyResponse[];
+  @OneToMany(() => SurveyResponse, surveyResponse => surveyResponse.user, { cascade: true, orphanedRowAction: "delete" })
+  surveyResponse: SurveyResponse[];
 
   isAdmin(): boolean {
-    return this.role == Role.Admin;
+    return this.roles.includes(Role.Admin);
   }
 }

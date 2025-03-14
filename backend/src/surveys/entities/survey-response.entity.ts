@@ -1,20 +1,19 @@
 import { User } from "../../users/entities/user.entity";
 import { Survey } from "./survey.entity";
-import { ManyToOne, JoinColumn, OneToMany, PrimaryGeneratedColumn, Unique, Column, Entity } from "typeorm";
-import { PrimaryColumn } from "typeorm/browser";
+import {ManyToOne, JoinColumn, OneToMany, PrimaryGeneratedColumn, Unique, Column, Entity, PrimaryColumn} from "typeorm";
 import { Choice } from "./choice.entity";
 
 @Entity()
-@Unique(["survey, user"])
+@Unique(["survey", "user"])
 export class SurveyResponse {
-  /*@PrimaryColumn()
+  @PrimaryColumn({type: "varchar", name: "user_id"})
   @ManyToOne(() => User, user => user.surveyResponse)
-  @JoinColumn({name: "user_id", referencedColumnName: "ID"})
-  user: User;*/
+  @JoinColumn({name: "user_id", referencedColumnName: "id"})
+  user: User;
 
-  @PrimaryColumn()
-  @ManyToOne(() => Survey, survey => survey.id)
-  @JoinColumn({name: "survey_id", referencedColumnName: "ID"})
+  @PrimaryColumn({type: "varchar", name: "survey_id"})
+  @ManyToOne(() => Survey, survey => survey.surveyResponse)
+  @JoinColumn({name: "survey_id", referencedColumnName: "id"})
   survey: Survey;
 
   @Column()

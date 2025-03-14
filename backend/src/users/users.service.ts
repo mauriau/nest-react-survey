@@ -8,7 +8,6 @@ import * as argon2 from "argon2";
 
 @Injectable()
 export class UsersService {
-  private saltRound = 10;
   constructor(
       @InjectRepository(User)
       private readonly userRepository: Repository<User>) {

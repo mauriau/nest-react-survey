@@ -7,9 +7,11 @@ import { Choice } from "./entities/choice.entity";
 import { SurveyResponse } from "./entities/survey-response.entity";
 
 @Module({
+  imports: [
+      TypeOrmModule.forFeature([Survey, SurveyResponse, Choice])
+  ],
   controllers: [SurveysController],
-  exports: [SurveysService],
-  imports: [TypeOrmModule.forFeature([Survey, Choice, SurveyResponse])],
   providers: [SurveysService],
+  exports: [SurveysService],
 })
 export class SurveysModule {}

@@ -1,5 +1,4 @@
-import { Column, Entity, JoinColumn, PrimaryGeneratedColumn } from "typeorm";
-import { ManyToOne } from "typeorm/browser";
+import { Column, Entity, JoinColumn, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
 import { Survey } from "./survey.entity";
 
 @Entity()

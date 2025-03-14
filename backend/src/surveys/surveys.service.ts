@@ -22,15 +22,14 @@ export class SurveysService {
     survey.choices = createSurveyDto.choices.map(choice => {
       const choiceEntity = new Choice();
       choiceEntity.title = choice.title;
-      choiceEntity.survey = survey;
       return choiceEntity;
     });
-
+    console.log({choices: survey.choices})
     return this.surveyRepository.save(survey);
   }
 
   findAll() {
-    return `This action returns all surveys`;
+    return this.surveyRepository.find();
   }
 
   findOne(id: number) {

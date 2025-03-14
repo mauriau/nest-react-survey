@@ -1,7 +1,7 @@
 import { ArrayMinSize, IsArray, IsBoolean, IsString, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 
-class Choice {
+class ChoiceDto {
   @IsString()
   title: string;
 }
@@ -16,8 +16,8 @@ export class CreateSurveyDto {
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(2)
-  @Type(() => Choice)
-  choices: Choice[];
+  @Type(() => ChoiceDto)
+  choices: ChoiceDto[];
 
   @IsBoolean()
   singleResponse: boolean;

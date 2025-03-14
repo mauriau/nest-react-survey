@@ -3,6 +3,8 @@ import { JwtService } from '@nestjs/jwt';
 import {IS_PUBLIC_KEY, jwtConstants} from './constants';
 import { Request } from 'express';
 import {Reflector} from "@nestjs/core";
+import {Role} from "./role.enum";
+import {ROLES_KEY} from "./role.decorator";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -33,7 +35,16 @@ export class AuthGuard implements CanActivate {
     } catch {
       throw new UnauthorizedException();
     }
-    return true;
+
+    const requiredRoles = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+    if (!requiredRoles) {
+      return true;
+    }
+    const { user } = context.switchToHttp().getRequest();
+    return requiredRoles.some((role) => user.roles?.includes(role));
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
