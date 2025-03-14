@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany} from 'typeorm';
 import {Role} from "../../auth/role.enum";
+import {SurveyResponse} from "../../surveys/entities/survey-response.entity";
 
 @Entity()
 export class User {
@@ -25,7 +26,10 @@ export class User {
     @CreateDateColumn()
     created_at: Date;
 
-    isAdmin(): boolean {
-        return this.role == Role.Admin;
-    }
+//  @OneToMany(() => SurveyResponse, surveyResponse => surveyResponse.user, { cascade: true, orphanedRowAction: "delete" })
+//  surveyResponse: SurveyResponse[];
+
+  isAdmin(): boolean {
+    return this.role == Role.Admin;
+  }
 }

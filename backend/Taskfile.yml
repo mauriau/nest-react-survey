@@ -1,0 +1,25 @@
+# https://taskfile.dev
+
+version: "3"
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  default:
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true
+
+  dockerRebuild:
+    cmds:
+      - docker compose down -v
+      - docker compose up -d
+
+  runDevBackend:
+    cmds:
+      - pnpm run start:dev
+
+  eslint:
+    cmds:
+      - pnpm eslint

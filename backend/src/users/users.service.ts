@@ -4,7 +4,6 @@ import {UpdateUserDto} from './dto/update-user.dto';
 import {Repository} from "typeorm";
 import {User} from "./entities/user.entity";
 import {InjectRepository} from "@nestjs/typeorm";
-import bcrypt from "bcrypt";
 import * as argon2 from "argon2";
 
 @Injectable()

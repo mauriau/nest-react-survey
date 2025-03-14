@@ -26,7 +26,6 @@ import {UsersController} from "./users/users.controller";
       strategyInitializer: classes(),
     }),
     UsersModule,
-    SurveysModule,
     AuthModule,
   ],
   providers: [
