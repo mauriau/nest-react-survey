@@ -4,12 +4,8 @@ import { Repository } from 'typeorm';
 import { SurveyResponse } from '../entities/survey-response.entity';
 import { CreateResponseSurveyDto } from '../dto/create-response-survey.dto';
 import { RuntimeException } from '@nestjs/core/errors/exceptions';
-import { Inject, Injectable, NotFoundException, Scope } from '@nestjs/common';
-import { ExecutionContext } from '@nestjs/common/interfaces/features/execution-context.interface';
-import { REQUEST } from '@nestjs/core';
-import { Request } from 'express';
+import {  Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '../../users/entities/user.entity';
-import { exit } from '@nestjs/cli/actions';
 
 @Injectable()
 export class RespondToASurveyService {

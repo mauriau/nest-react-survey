@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Role } from '../../auth/role.enum';
 import { SurveyResponse } from '../../surveys/entities/survey-response.entity';
+import {IsEmail} from "class-validator";
 
 @Unique(['username', 'email'])
 @Entity()
@@ -19,6 +20,7 @@ export class User {
   username: string;
 
   @Column({ unique: true })
+  @IsEmail()
   email: string;
 
   @Column()

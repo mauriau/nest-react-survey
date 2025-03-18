@@ -5,6 +5,7 @@ import { Roles } from '../../auth/role.decorator';
 import { Role } from '../../auth/role.enum';
 import { GetUser } from '../../auth/get-user.decorator';
 import { User } from '../../users/entities/user.entity';
+import {validate} from "class-validator";
 
 @Controller('surveys')
 export class SurveyResponseController {
@@ -14,11 +15,15 @@ export class SurveyResponseController {
 
   @Roles(Role.User)
   @Post('/respond')
-  respondToASurvey(
+  async respondToASurvey(
     @Body() createResponseSurveyDto: CreateResponseSurveyDto,
     @GetUser() user: User,
-  ) {
-    return this.respondToASurveyService.respondToASurvey(
+  ) {3
+      const errors = await validate(createResponseSurveyDto)
+      if (errors.length > 0) {
+          throw new Error(`Validation failed!`)
+      }
+      return this.respondToASurveyService.respondToASurvey(
       createResponseSurveyDto,
       user,
     );

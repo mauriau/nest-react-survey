@@ -12,6 +12,7 @@ import { CreateSurveyDto } from '../dto/create-survey.dto';
 import { UpdateSurveyDto } from '../dto/update-survey.dto';
 import { Roles } from '../../auth/role.decorator';
 import { Role } from '../../auth/role.enum';
+import {validate} from "class-validator";
 
 @Controller('surveys')
 export class SurveysController {

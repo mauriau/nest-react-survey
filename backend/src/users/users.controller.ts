@@ -12,7 +12,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Public } from '../auth/constants';
 import { QueryFailedError } from 'typeorm';
-import { UniqueConstraintError } from 'sequelize';
 import { RuntimeException } from '@nestjs/core/errors/exceptions';
 
 @Controller('users')
@@ -21,7 +20,8 @@ export class UsersController {
 
   @Public()
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  async create(@Body() createUserDto: CreateUserDto) {
+
     try {
       return this.usersService.create(createUserDto);
     } catch (e) {
