@@ -3,6 +3,9 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {Public} from "../auth/constants";
+import {QueryFailedError} from "typeorm";
+import {UniqueConstraintError} from "sequelize";
+import {RuntimeException} from "@nestjs/core/errors/exceptions";
 
 @Controller('users')
 export class UsersController {
@@ -13,7 +16,15 @@ export class UsersController {
   @Public()
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    try {
+      return this.usersService.create(createUserDto);
+    }catch (e){
+
+      if(e instanceof QueryFailedError) {
+        throw new RuntimeException("this user already exist")
+      }
+
+    }
   }
 
   @Get()

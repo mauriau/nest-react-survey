@@ -28,9 +28,5 @@ export class User {
     created_at: Date;
 
   @OneToMany(() => SurveyResponse, surveyResponse => surveyResponse.user, { cascade: true, orphanedRowAction: "delete" })
-  surveyResponse: SurveyResponse[];
-
-  isAdmin(): boolean {
-    return this.roles.includes(Role.Admin);
-  }
+  surveyResponses: SurveyResponse[];
 }

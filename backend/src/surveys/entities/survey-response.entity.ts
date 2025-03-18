@@ -1,13 +1,22 @@
 import { User } from "../../users/entities/user.entity";
 import { Survey } from "./survey.entity";
-import {ManyToOne, JoinColumn, OneToMany, PrimaryGeneratedColumn, Unique, Column, Entity, PrimaryColumn} from "typeorm";
-import { Choice } from "./choice.entity";
+import {
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+  Column,
+  Entity,
+  PrimaryColumn,
+  CreateDateColumn
+} from "typeorm";
 
 @Entity()
 @Unique(["survey", "user"])
 export class SurveyResponse {
   @PrimaryColumn({type: "varchar", name: "user_id"})
-  @ManyToOne(() => User, user => user.surveyResponse)
+  @ManyToOne(() => User, user => user.surveyResponses)
   @JoinColumn({name: "user_id", referencedColumnName: "id"})
   user: User;
 
@@ -16,9 +25,9 @@ export class SurveyResponse {
   @JoinColumn({name: "survey_id", referencedColumnName: "id"})
   survey: Survey;
 
-  @Column()
+  @CreateDateColumn()
   respondedAt: Date;
 
   @Column({ type: "json" })
-  choices: Choice[];
+  choices: string[];
 }

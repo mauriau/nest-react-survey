@@ -1,11 +1,10 @@
-import { Survey } from "../entities/survey.entity";
-import { Choice } from "../entities/choice.entity";
-import { IsArray, IsObject } from "class-validator";
+import {ArrayMinSize, IsArray, IsObject, IsString} from "class-validator";
 
 export class CreateResponseSurveyDto {
-  @IsObject()
-  survey: Survey;
+  @IsString()
+  surveyId: string;
 
   @IsArray()
-  choices: Choice[];
+  @ArrayMinSize(1)
+  choiceIds: string[];
 }

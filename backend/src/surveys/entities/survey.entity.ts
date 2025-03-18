@@ -16,9 +16,9 @@ export class Survey {
     @Column()
     singleResponse: boolean
 
-    @OneToMany(() => Choice, choice => choice.survey, {cascade: true})
+    @OneToMany(() => Choice, choice => choice.survey, {cascade: true,})
     choices: Choice[]
 
-    @OneToMany(() => SurveyResponse, surveyResponse => surveyResponse.survey, {cascade: true})
+    @OneToMany(() => SurveyResponse, surveyResponse => surveyResponse.survey, {cascade: true,  lazy: true})
     surveyResponse: SurveyResponse[]
 }
