@@ -8,7 +8,7 @@ import {
     Typography,
     Checkbox,
     FormGroup,
-    FormControl,
+    FormControl
 } from "@mui/material";
 import { useState } from "react";
 
@@ -16,7 +16,7 @@ type Props = {
     survey: Survey;
 };
 
-export const ASurvey = ({ survey }: Props): React.FC<Props> => {
+export const  ASurvey = ({ survey }: Props): React.FC<Props> => {
     const [selectedOptions, setSelectedOptions] = useState<{ [key: number]: string[] }>({});
     const [answered, setAnswered] = useState(false);
 
@@ -45,6 +45,7 @@ export const ASurvey = ({ survey }: Props): React.FC<Props> => {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
         setAnswered(true);
     };
 
@@ -97,6 +98,9 @@ export const ASurvey = ({ survey }: Props): React.FC<Props> => {
                 onClick={() => handleSubmit(survey.id)}
             >
                 {answered ? "Répondu ✅" : "Soumettre"}
+            </Button>
+            <Button href={`/surveys/${survey.id}/results`} style={{ textDecoration: 'none' }}>
+                Voir les résultats
             </Button>
         </Paper>
     );

@@ -1,4 +1,4 @@
-import {ArrayMinSize, IsArray, IsObject, IsString} from "class-validator";
+import { ArrayMinSize, IsArray, IsObject, IsString } from 'class-validator';
 
 export class CreateResponseSurveyDto {
   @IsString()

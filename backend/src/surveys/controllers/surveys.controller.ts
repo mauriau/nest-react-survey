@@ -1,9 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { SurveysService } from '../services/surveys.service';
 import { CreateSurveyDto } from '../dto/create-survey.dto';
 import { UpdateSurveyDto } from '../dto/update-survey.dto';
-import {Roles} from "../../auth/role.decorator";
-import {Role} from "../../auth/role.enum";
+import { Roles } from '../../auth/role.decorator';
+import { Role } from '../../auth/role.enum';
 
 @Controller('surveys')
 export class SurveysController {

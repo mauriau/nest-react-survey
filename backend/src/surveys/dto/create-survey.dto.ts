@@ -1,5 +1,10 @@
-import { ArrayMinSize, IsArray, IsBoolean, IsString, ValidateNested } from "class-validator";
-
+import {
+  ArrayMinSize,
+  IsArray,
+  IsBoolean,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 
 export class CreateSurveyDto {
   @IsString()

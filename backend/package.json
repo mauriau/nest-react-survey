@@ -85,7 +85,7 @@
       "ts"
     ],
     "rootDir": "src",
-    "testRegex": ".spec.js$",
+    "testRegex": ".spec.js",
     "coverageDirectory": "../coverage"
   },
   "pnpm": {

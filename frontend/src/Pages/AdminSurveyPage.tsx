@@ -30,7 +30,6 @@ export default function AdminSurveyPage() {
         const updatedChoices = choices.filter((_, i) => i !== index);
         setChoices(updatedChoices);
     };
-
     const handleChoiceChange = (index: number, value: string) => {
         const updatedChoices = choices.map((choice, i) => (i === index ? value : choice));
         setChoices(updatedChoices);
@@ -45,7 +44,6 @@ export default function AdminSurveyPage() {
 
         setError("");
         const surveyData = { title, description, choices, singleResponse: multipleChoice };
-        console.log("Survey Created:", surveyData);
         const token = localStorage.getItem('token');
 
         const response = await fetch("http://localhost:3000/surveys", {

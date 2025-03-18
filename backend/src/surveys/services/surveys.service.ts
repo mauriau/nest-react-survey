@@ -1,10 +1,10 @@
-import { Injectable } from "@nestjs/common";
-import { CreateSurveyDto } from "../dto/create-survey.dto";
-import { UpdateSurveyDto } from "../dto/update-survey.dto";
-import { Survey } from "../entities/survey.entity";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { Choice } from "../entities/choice.entity";
+import { Injectable } from '@nestjs/common';
+import { CreateSurveyDto } from '../dto/create-survey.dto';
+import { UpdateSurveyDto } from '../dto/update-survey.dto';
+import { Survey } from '../entities/survey.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Choice } from '../entities/choice.entity';
 
 @Injectable()
 export class SurveysService {
@@ -19,7 +19,7 @@ export class SurveysService {
     survey.description = createSurveyDto.description;
     survey.singleResponse = createSurveyDto.singleResponse;
 
-    survey.choices = createSurveyDto.choices.map(choice => {
+    survey.choices = createSurveyDto.choices.map((choice) => {
       const choiceEntity = new Choice();
       choiceEntity.title = choice;
       return choiceEntity;
@@ -28,7 +28,7 @@ export class SurveysService {
   }
 
   findAll() {
-    return this.surveyRepository.find({relations: ['choices']});
+    return this.surveyRepository.find({ relations: ['choices'] });
   }
 
   findOne(id: number) {

@@ -27,7 +27,6 @@ const LoginPage = () => {
 
             const decodedToken = JSON.parse(atob(data.access_token	.split(".")[1]));
             const roles = decodedToken.roles;
-            console.log(roles === "admin")
 
             if (roles === "admin") {
                 navigate("/admin/survey");
