@@ -1,49 +1,26 @@
-// SurveyResults.tsx
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Typography, Paper, List, ListItem, ListItemText } from '@mui/material';
 import {useParams} from "react-router-dom";
-
+import {
+    useQuery,
+} from '@tanstack/react-query'
+import {useSurveyResult} from "../../hooks/surveys/useSurveyResult.ts";
 type SurveyResult = {
     choice: string;
     count: number;
 };
 export const SurveyResults: React.FC= () => {
     const {id} = useParams()
-    const [results, setResults] = useState<SurveyResult[]>([]);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        const fetchResults = async () => {
-            try {
-                const token = localStorage.getItem('token')
-                const response = await fetch(
-                    `http://localhost:3000/surveys/${id}/results`,
-                    {
-                        method: 'GET',
-                        mode: "cors",
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                    );
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                setResults(data);
-            } catch (err) {
-                setError(err.message || 'An error occurred while fetching the results');
-            }
-        };
-
-        fetchResults();
-    }, [id]);
+    const { isPending, data: results, error } = useQuery(
+        {
+            queryKey: ["surveyResult", {id}],
+            queryFn: useSurveyResult
+        }
+    );
+    if (isPending) return 'Loading...'
 
     if (error) {
-        return <Typography color="error">{error}</Typography>;
+        return <Typography color="error">{error.message}</Typography>;
     }
     return (
         <Paper elevation={3} sx={{ p: 3, mb: 3, borderRadius: 2 }}>
@@ -51,7 +28,7 @@ export const SurveyResults: React.FC= () => {
                 Résultats du sondage
             </Typography>
             <List>
-                {results.map((result, index) => (
+                {results.map((result: SurveyResult, index: number) => (
                     <ListItem key={index}>
                         <ListItemText primary={`Choix: ${result.choice}`} secondary={`Nombre de votes: ${result.count}`} />
                     </ListItem>
