@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { TextField, Button, Container, Typography, Box, Paper, Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import {useLogin} from "../hooks/auth/useLogin.ts";
 
 const LoginPage = () => {
     const [username, setUsername] = useState("");
@@ -11,28 +12,14 @@ const LoginPage = () => {
     const handleLogin = async () => {
         setError("");
         try {
-            const response = await fetch("http://localhost:3000/auth/login", {
-                method: "POST",
-                mode: "cors",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, password })
-            });
-
-            if (!response.ok) {
-                throw new Error("Identifiants incorrects");
-            }
-
-            const data = await response.json();
-            localStorage.setItem("token", data.access_token	);
-
+            const {data} = await useLogin(username, password)
             const decodedToken = JSON.parse(atob(data.access_token	.split(".")[1]));
             const roles = decodedToken.roles;
-
+            let route = "/surveys"
             if (roles === "admin") {
-                navigate("/admin/survey");
-            } else {
-                navigate("/surveys");
+                route = "/admin/survey";
             }
+            navigate(route);
         } catch (err) {
             setError(err.message);
         }
