@@ -1,10 +1,10 @@
-import { ArrayMinSize, IsArray, IsObject, IsString } from 'class-validator';
+import {ArrayMinSize, IsArray, IsObject, IsString} from 'class-validator';
 
 export class CreateResponseSurveyDto {
-  @IsString()
-  surveyId: string;
+    @IsString()
+    surveyId: string;
 
-  @IsArray()
-  @ArrayMinSize(1)
-  choiceIds: string[];
+    @IsArray()
+    @ArrayMinSize(1)
+    choiceIds: string[];
 }

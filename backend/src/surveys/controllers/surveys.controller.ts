@@ -1,46 +1,47 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
+    Controller,
+    Get,
+    Post,
+    Body,
+    Patch,
+    Param,
+    Delete,
 } from '@nestjs/common';
-import { SurveysService } from '../services/surveys.service';
-import { CreateSurveyDto } from '../dto/create-survey.dto';
-import { UpdateSurveyDto } from '../dto/update-survey.dto';
-import { Roles } from '../../auth/role.decorator';
-import { Role } from '../../auth/role.enum';
+import {SurveysService} from '../services/surveys.service';
+import {CreateSurveyDto} from '../dto/create-survey.dto';
+import {UpdateSurveyDto} from '../dto/update-survey.dto';
+import {Roles} from '../../auth/role.decorator';
+import {Role} from '../../auth/role.enum';
 import {validate} from "class-validator";
 
 @Controller('surveys')
 export class SurveysController {
-  constructor(private readonly surveysService: SurveysService) {}
+    constructor(private readonly surveysService: SurveysService) {
+    }
 
-  @Roles(Role.Admin)
-  @Post()
-  create(@Body() createSurveyDto: CreateSurveyDto) {
-    return this.surveysService.create(createSurveyDto);
-  }
+    @Roles(Role.Admin)
+    @Post()
+    create(@Body() createSurveyDto: CreateSurveyDto) {
+        return this.surveysService.create(createSurveyDto);
+    }
 
-  @Get()
-  findAll() {
-    return this.surveysService.findAll();
-  }
+    @Get()
+    findAll() {
+        return this.surveysService.findAll();
+    }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.surveysService.findOne(+id);
-  }
+    @Get(':id')
+    findOne(@Param('id') id: string) {
+        return this.surveysService.findOne(+id);
+    }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSurveyDto: UpdateSurveyDto) {
-    return this.surveysService.update(+id, updateSurveyDto);
-  }
+    @Patch(':id')
+    update(@Param('id') id: string, @Body() updateSurveyDto: UpdateSurveyDto) {
+        return this.surveysService.update(+id, updateSurveyDto);
+    }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.surveysService.remove(+id);
-  }
+    @Delete(':id')
+    remove(@Param('id') id: string) {
+        return this.surveysService.remove(+id);
+    }
 }
