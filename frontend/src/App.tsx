@@ -4,7 +4,7 @@ import LoginPage from "./Pages/LoginPage.tsx";
 import AdminSurveyPage from "./Pages/AdminSurveyPage.tsx";
 import SurveysPage from "./Pages/SurveysPage.tsx";
 import {SurveyResults} from "./Pages/Surveys/SurveyResults.tsx";
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 
 const PrivateRoute = ({ children }) => {
@@ -15,16 +15,17 @@ const PrivateRoute = ({ children }) => {
     return children;
 };
 
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            refetchOnWindowFocus: false,
-        },
-    },
-});
+
 
 
 const App = () => {
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                refetchOnWindowFocus: false,
+            },
+        },
+    });
     return (
         <QueryClientProvider client={queryClient}>
             <Router>

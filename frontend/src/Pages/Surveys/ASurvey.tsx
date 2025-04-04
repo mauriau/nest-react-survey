@@ -8,6 +8,8 @@ import {
 import { useState } from "react";
 import {SimpleChoice} from "./SimpleChoice.tsx";
 import {MultiChoice} from "./MultiChoice.tsx";
+import {useMutation, useQueryClient} from "react-query";
+import {useRespondToASurvey} from "../../hooks/surveys/useRespondToASurvey.ts";
 
 type Props = {
     survey: Survey;
@@ -27,20 +29,21 @@ export function  ASurvey  ({ survey }: Props) {
         });
     };
 
+    const {mutateAsync} = useMutation({
+        mutationKey: ['response', {surveyId: survey.id}],
+        mutationFn: async ({
+           surveyId,
+           choiceIds,
+       }: {
+            surveyId: string;
+            choiceIds: string[];
+        }) => {
+            return useRespondToASurvey(surveyId, choiceIds);
+        },
+    })
+
     const handleSubmit = async (surveyId: string) => {
-        const token = localStorage.getItem('token');
-        const response = await fetch("http://localhost:3000/surveys/respond", {
-            method: "POST",
-            mode: "cors",
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ surveyId, choiceIds: selectedOptions[surveyId] }),
-        });
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+        await mutateAsync({surveyId, choiceIds: selectedOptions[surveyId]})
 
         setAnswered(true);
     };
