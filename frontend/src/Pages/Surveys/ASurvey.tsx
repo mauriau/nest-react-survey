@@ -1,37 +1,33 @@
 import { Survey } from "../../types.ts";
 import {
     Button,
-    FormControlLabel,
     Paper,
-    Radio,
-    RadioGroup,
     Typography,
-    Checkbox,
-    FormGroup,
     FormControl
 } from "@mui/material";
 import { useState } from "react";
+import {SimpleChoice} from "./SimpleChoice.tsx";
+import {MultiChoice} from "./MultiChoice.tsx";
 
 type Props = {
     survey: Survey;
 };
 
-export const  ASurvey = ({ survey }: Props): React.FC<Props> => {
-    const [selectedOptions, setSelectedOptions] = useState<{ [key: number]: string[] }>({});
+export function  ASurvey  ({ survey }: Props) {
+    const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string[] }>({});
     const [answered, setAnswered] = useState(false);
 
-    const handleChange = (surveyId: number, choiceId: string) => {
+    const handleChange = (surveyId: string, choiceId: string) => {
         setSelectedOptions((prev) => {
             const updatedChoices = prev[surveyId] ? [...prev[surveyId]] : [];
             if (updatedChoices.includes(choiceId)) {
                 return { ...prev, [surveyId]: updatedChoices.filter((c) => c !== choiceId) };
-            } else {
-                return { ...prev, [surveyId]: survey.singleResponse ? [choiceId] : [...updatedChoices, choiceId] };
             }
+            return { ...prev, [surveyId]: survey.singleResponse ? [choiceId] : [...updatedChoices, choiceId] };
         });
     };
 
-    const handleSubmit = async (surveyId: number) => {
+    const handleSubmit = async (surveyId: string) => {
         const token = localStorage.getItem('token');
         const response = await fetch("http://localhost:3000/surveys/respond", {
             method: "POST",
@@ -60,34 +56,9 @@ export const  ASurvey = ({ survey }: Props): React.FC<Props> => {
 
             <FormControl component="fieldset">
                 {survey.singleResponse ? (
-                    <RadioGroup
-                        value={selectedOptions[survey.id]?.[0] || ""}
-                        onChange={(e) => handleChange(survey.id, e.target.value)}
-                    >
-                        {survey.choices.map((choice) => (
-                            <FormControlLabel
-                                key={choice.id}
-                                value={choice.id}
-                                control={<Radio />}
-                                label={choice.title}
-                            />
-                        ))}
-                    </RadioGroup>
+                    <SimpleChoice survey={survey} selectedOptions={selectedOptions} handleChange={handleChange} />
                 ) : (
-                    <FormGroup>
-                        {survey.choices.map((choice) => (
-                            <FormControlLabel
-                                key={choice.id}
-                                control={
-                                    <Checkbox
-                                        checked={selectedOptions[survey.id]?.includes(choice.id) || false}
-                                        onChange={() => handleChange(survey.id, choice.id)}
-                                    />
-                                }
-                                label={choice.title}
-                            />
-                        ))}
-                    </FormGroup>
+                    <MultiChoice survey={survey} selectedOptions={selectedOptions} handleChange={handleChange} />
                 )}
             </FormControl>
             <Button
