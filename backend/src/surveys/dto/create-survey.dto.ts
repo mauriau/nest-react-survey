@@ -14,7 +14,6 @@ export class CreateSurveyDto {
     description: string;
 
     @IsArray()
-    @ValidateNested({each: true})
     @ArrayMinSize(1)
     choices: string[];
 

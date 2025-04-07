@@ -38,3 +38,5 @@ export interface  Survey {
     choices: Choice[],
     surveyResponse: SurveyResponse[]
 }
+
+export interface createSurveyDto { title: string, description: string, choices: string[], singleResponse: boolean };

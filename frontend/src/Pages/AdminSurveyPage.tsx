@@ -9,63 +9,74 @@ import {
     Checkbox,
     FormControlLabel,
     IconButton,
+    Snackbar,
 } from "@mui/material";
-import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import { Add, Remove } from "@mui/icons-material";
-interface State extends SnackbarOrigin {
+import { useMutation } from "@tanstack/react-query";
+import {useCreateSurvey} from "../hooks/surveys/useCreateSurvey.ts";
+import {createSurveyDto} from "../types.ts";
+import {api} from "../hooks/api.ts";
+
+interface State {
     open: boolean;
+    vertical: 'top' | 'bottom';
+    horizontal: 'left' | 'center' | 'right';
 }
 export default function AdminSurveyPage() {
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [choices, setChoices] = useState([""]);
-    const [multipleChoice, setMultipleChoice] = useState(false);
-    const [error, setError] = useState("");
-    const [state, setState] = useState<State>({open: false });
+    const [title, setTitle] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
+    const [choices, setChoices] = useState<string[]>([""]);
+    const [multipleChoice, setMultipleChoice] = useState<boolean>(false);
+    const [snackbarState, setSnackbarState] = useState<State>({ open: false, vertical: "top", horizontal: "right" });
+
+    const { mutateAsync, error } = useMutation(
+        {
+            mutationFn: (surveyData: createSurveyDto) => {
+                return api.post('/surveys', surveyData,{
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                }).then((r) => r.data.data);
+            },
+            mutationKey: ["useCreateSurvey", {title}],
+            onSuccess: () => {
+                setSnackbarState({ ...snackbarState, open: true });
+                setChoices([])
+                setTitle("")
+                setDescription("")
+                setMultipleChoice(false)
+            }
+        }
+    )
+
     const handleAddChoice = () => {
         setChoices([...choices, ""]);
     };
-    const {  open } = state;
-    const handleRemoveChoice = (index: number) => {
-        const updatedChoices = choices.filter((_, i) => i !== index);
-        setChoices(updatedChoices);
-    };
-    const handleChoiceChange = (index: number, value: string) => {
-        const updatedChoices = choices.map((choice, i) => (i === index ? value : choice));
-        setChoices(updatedChoices);
+
+    const handleRemoveChoice = (index) => {
+        setChoices(choices.filter((_, i) => i !== index));
     };
 
-    const handleSubmit = async () => {
+    const handleChoiceChange = (index, value) => {
+        setChoices(choices.map((choice, i) => (i === index ? value : choice)));
+    };
 
-        if (choices.length < 1 || choices.some(choice => choice.trim() === "")) {
-            setError("Veuillez ajouter au moins un choix valide.");
-            return;
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (choices.length < 1 || choices.some((choice) => choice.trim() === "")) {
+            throw new Error("Veuillez ajouter au moins un choix valide.");
         }
 
-        setError("");
         const surveyData = { title, description, choices, singleResponse: multipleChoice };
-        const token = localStorage.getItem('token');
-
-        const response = await fetch("http://localhost:3000/surveys", {
-            method: "POST",
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(surveyData)
-        });
-
-        if (!response.ok) {
-            throw new Error("Identifiants incorrects");
-        }
-        setState({ open: true });
-        window.location.reload();
-
+        mutateAsync(surveyData);
     };
-    const handleClose = () => {
-        setState({ ...state, open: false });
+
+    const handleCloseSnackbar = () => {
+        setSnackbarState({ ...snackbarState, open: false });
     };
+
+
     return (
         <Container maxWidth="sm" sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
             <Paper elevation={6} sx={{ p: 5, width: "100%", maxWidth: 500, textAlign: "center", borderRadius: 2 }}>
@@ -117,14 +128,13 @@ export default function AdminSurveyPage() {
                         Valider le sondage
                     </Button>
                     <Snackbar
-                        anchorOrigin={{  vertical: 'top', horizontal: 'right' }}
-                        open={open}
-                        onClose={handleClose}
+                        anchorOrigin={{ vertical: snackbarState.vertical, horizontal: snackbarState.horizontal }}
+                        open={snackbarState.open}
+                        onClose={handleCloseSnackbar}
                         message="Sauvegardé"
                     />
                 </Box>
             </Paper>
         </Container>
     );
-};
-
+}

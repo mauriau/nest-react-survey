@@ -8,7 +8,7 @@ import {
 import { useState } from "react";
 import {SimpleChoice} from "./SimpleChoice.tsx";
 import {MultiChoice} from "./MultiChoice.tsx";
-import {useMutation, useQueryClient} from "react-query";
+import {useMutation} from "react-query";
 import {useRespondToASurvey} from "../../hooks/surveys/useRespondToASurvey.ts";
 
 type Props = {
