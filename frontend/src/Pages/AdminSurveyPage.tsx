@@ -15,7 +15,6 @@ import { Add, Remove } from "@mui/icons-material";
 import { useMutation } from "@tanstack/react-query";
 import {useCreateSurvey} from "../hooks/surveys/useCreateSurvey.ts";
 import {createSurveyDto} from "../types.ts";
-import {api} from "../hooks/api.ts";
 
 interface State {
     open: boolean;
@@ -31,14 +30,7 @@ export default function AdminSurveyPage() {
 
     const { mutateAsync, error } = useMutation(
         {
-            mutationFn: (surveyData: createSurveyDto) => {
-                return api.post('/surveys', surveyData,{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
-                    }
-                }).then((r) => r.data.data);
-            },
+            mutationFn: (surveyData: createSurveyDto) => useCreateSurvey(surveyData),
             mutationKey: ["useCreateSurvey", {title}],
             onSuccess: () => {
                 setSnackbarState({ ...snackbarState, open: true });
